@@ -7,10 +7,12 @@
     <groupId>org.example</groupId>
     <artifactId>chat-microservices</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
 
     <modules>
         <module>user-profile-service</module>
+        <module>auth-service</module>
     </modules>
 
 
