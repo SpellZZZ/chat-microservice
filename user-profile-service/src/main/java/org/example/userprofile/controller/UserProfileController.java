@@ -18,14 +18,6 @@ public class UserProfileController {
 
     private final UserProfileService userProfileService;
 
-    @PostMapping("/userCreate")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String createUserProfile(@RequestBody UserProfileRequest userProfileRequest) {
-        userProfileService.createUserProfile(userProfileRequest);
-        return "User profile created!";
-    }
-
-
     @GetMapping("/getUserProfile")
     @ResponseStatus(HttpStatus.OK)
     public List<UserProfileResponse> getUserProfiles() {
