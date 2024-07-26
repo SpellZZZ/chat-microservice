@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.authservice.dao.request.UserLoginRequest;
 import org.example.authservice.dao.request.UserRegisterRequest;
 import org.example.authservice.dao.response.TokenResponse;
-import org.example.authservice.dao.response.UserProfileResponse;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -18,13 +16,10 @@ public class AuthService {
 
     private final WebClient.Builder webClientBuilder;
 
-    public Mono<Void> register(UserProfileResponse userProfileResponse) {
-        System.out.println("start");
+    public Mono<Void> register(UserRegisterRequest userRegisterRequest) {
 
-        Mono<Boolean> userNameExist = checkUserNameExists(userProfileResponse.getUsername());
-        Mono<Boolean> emailExist = checkEmailExists(userProfileResponse.getEmail());
-
-        UserRegisterRequest userRegisterRequest = buildUserRegisterRequest(userProfileResponse);
+        Mono<Boolean> userNameExist = checkUserNameExists(userRegisterRequest.getUsername());
+        Mono<Boolean> emailExist = checkEmailExists(userRegisterRequest.getEmail());
 
         return Mono.zip(emailExist, userNameExist)
                 .flatMap(tuple -> {
@@ -35,7 +30,6 @@ public class AuthService {
                         return Mono.error(new RuntimeException("Username or email already exists"));
                     }
 
-                    // Wywołanie metody registerUserProfile, która zwraca Mono
                     return registerUserProfile(userRegisterRequest);
                 })
                 .doOnSuccess(aVoid -> System.out.println("Registration completed"))
@@ -43,22 +37,10 @@ public class AuthService {
     }
 
 
-
-
-
-
     public TokenResponse login(UserLoginRequest userLoginRequest) {
         return null;
     }
 
-
-    private UserRegisterRequest buildUserRegisterRequest(UserProfileResponse userProfileResponse){
-        return UserRegisterRequest.builder()
-                .email(userProfileResponse.getEmail())
-                .password(userProfileResponse.getPassword())
-                .username(userProfileResponse.getUsername())
-                .build();
-    }
 
     private Mono<Boolean> checkUserNameExists(String username) {
         return webClientBuilder.build()

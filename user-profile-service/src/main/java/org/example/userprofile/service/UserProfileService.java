@@ -4,8 +4,7 @@ package org.example.userprofile.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.userprofile.dto.request.UserRegisterRequest;
-import org.example.userprofile.dto.response.UserProfileFullResponse;
-import org.example.userprofile.dto.response.UserProfilePartResponse;
+import org.example.userprofile.dto.response.UserProfileResponse;
 import org.example.userprofile.model.UserProfile;
 import org.example.userprofile.repository.UserRepo;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,11 +33,11 @@ public class UserProfileService {
     }
 
 
-    public List<UserProfilePartResponse> getUserProfiles() {
+    public List<UserProfileResponse> getUserProfiles() {
 
         return userRepo.findAll().stream()
                 .map(user ->
-                        UserProfilePartResponse.builder()
+                        UserProfileResponse.builder()
                                 .id(user.getUserId())
                                 .username(user.getUsername())
                                 .email(user.getEmail())
@@ -47,12 +46,12 @@ public class UserProfileService {
     }
 
 
-    public UserProfilePartResponse getUserProfile(Long userProfileId) {
+    public UserProfileResponse getUserProfile(Long userProfileId) {
         UserProfile user = userRepo.findById(userProfileId).orElse(null);
         if (user == null) {
             return null;
         }
-        return  UserProfilePartResponse.builder()
+        return  UserProfileResponse.builder()
                     .id(user.getUserId())
                     .username(user.getUsername())
                     .email(user.getEmail())
@@ -68,7 +67,7 @@ public class UserProfileService {
     }
 
 
-    public UserProfileFullResponse getUserProfileByUserName(String userName) {
+    public UserProfileResponse getUserProfileByUserName(String userName) {
         Optional<UserProfile> userOp = userRepo.findUserProfileByUsername(userName);
 
         if (userOp.isEmpty()) {
@@ -76,11 +75,10 @@ public class UserProfileService {
         }
         UserProfile user = userOp.get();
 
-        return  UserProfileFullResponse.builder()
+        return  UserProfileResponse.builder()
                 .id(user.getUserId())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .password(user.getPassword())
                 .build();
 
     }

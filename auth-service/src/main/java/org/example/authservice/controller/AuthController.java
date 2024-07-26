@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.authservice.dao.request.UserLoginRequest;
 import org.example.authservice.dao.request.UserRegisterRequest;
 import org.example.authservice.dao.response.TokenResponse;
-import org.example.authservice.dao.response.UserProfileResponse;
 import org.example.authservice.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +22,8 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public Mono<ResponseEntity<String>> register(@RequestBody UserProfileResponse userProfileResponse) {
-        return authService.register(userProfileResponse)
+    public Mono<ResponseEntity<String>> register(@RequestBody UserRegisterRequest userRegisterRequest) {
+        return authService.register(userRegisterRequest)
                 .then(Mono.just(ResponseEntity.status(HttpStatus.CREATED).body("User profile created!")))
                 .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage())));
     }

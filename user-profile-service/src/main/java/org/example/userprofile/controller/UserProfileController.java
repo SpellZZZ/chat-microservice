@@ -3,8 +3,7 @@ package org.example.userprofile.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.userprofile.dto.request.UserRegisterRequest;
-import org.example.userprofile.dto.response.UserProfileFullResponse;
-import org.example.userprofile.dto.response.UserProfilePartResponse;
+import org.example.userprofile.dto.response.UserProfileResponse;
 import org.example.userprofile.service.UserProfileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,32 +28,32 @@ public class UserProfileController {
 
     @GetMapping("/getUserProfile")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserProfilePartResponse> getUserProfiles() {
+    public List<UserProfileResponse> getUserProfiles() {
         return userProfileService.getUserProfiles();
     }
 
     @GetMapping("/getUserProfile/{id}")
-    public ResponseEntity<UserProfilePartResponse> getUserProfile(@PathVariable("id") Long userProfileId) {
+    public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable("id") Long userProfileId) {
 
-        UserProfilePartResponse userProfilePartResponse = userProfileService.getUserProfile(userProfileId);
+        UserProfileResponse userProfileResponse = userProfileService.getUserProfile(userProfileId);
 
-        if (userProfilePartResponse == null) {
+        if (userProfileResponse == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } else {
-            return ResponseEntity.ok(userProfilePartResponse);
+            return ResponseEntity.ok(userProfileResponse);
         }
 
     }
 
     @GetMapping("/getUserProfileByName/{userName}")
-    public ResponseEntity<UserProfileFullResponse> getUserProfileByUsername(@PathVariable("userName") String userName) {
+    public ResponseEntity<UserProfileResponse> getUserProfileByUsername(@PathVariable("userName") String userName) {
 
-        UserProfileFullResponse userProfilePartResponse = userProfileService.getUserProfileByUserName(userName);
+        UserProfileResponse userProfileResponse = userProfileService.getUserProfileByUserName(userName);
 
-        if (userProfilePartResponse == null) {
+        if (userProfileResponse == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } else {
-            return ResponseEntity.ok(userProfilePartResponse);
+            return ResponseEntity.ok(userProfileResponse);
         }
     }
 
