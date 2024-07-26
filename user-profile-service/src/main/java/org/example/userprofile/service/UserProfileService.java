@@ -4,13 +4,15 @@ package org.example.userprofile.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.userprofile.dto.request.UserRegisterRequest;
-import org.example.userprofile.dto.response.UserProfileResponse;
+import org.example.userprofile.dto.response.UserProfileFullResponse;
+import org.example.userprofile.dto.response.UserProfilePartResponse;
 import org.example.userprofile.model.UserProfile;
 import org.example.userprofile.repository.UserRepo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,11 +34,11 @@ public class UserProfileService {
     }
 
 
-    public List<UserProfileResponse> getUserProfiles() {
+    public List<UserProfilePartResponse> getUserProfiles() {
 
         return userRepo.findAll().stream()
                 .map(user ->
-                        UserProfileResponse.builder()
+                        UserProfilePartResponse.builder()
                                 .id(user.getUserId())
                                 .username(user.getUsername())
                                 .email(user.getEmail())
@@ -45,12 +47,12 @@ public class UserProfileService {
     }
 
 
-    public UserProfileResponse getUserProfile(Long userProfileId) {
+    public UserProfilePartResponse getUserProfile(Long userProfileId) {
         UserProfile user = userRepo.findById(userProfileId).orElse(null);
         if (user == null) {
             return null;
         }
-        return  UserProfileResponse.builder()
+        return  UserProfilePartResponse.builder()
                     .id(user.getUserId())
                     .username(user.getUsername())
                     .email(user.getEmail())
@@ -63,5 +65,23 @@ public class UserProfileService {
     }
     public boolean isUsernameExisting(String username) {
         return userRepo.findUserProfileByUsername(username).isPresent();
+    }
+
+
+    public UserProfileFullResponse getUserProfileByUserName(String userName) {
+        Optional<UserProfile> userOp = userRepo.findUserProfileByUsername(userName);
+
+        if (userOp.isEmpty()) {
+            return null;
+        }
+        UserProfile user = userOp.get();
+
+        return  UserProfileFullResponse.builder()
+                .id(user.getUserId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .build();
+
     }
 }
