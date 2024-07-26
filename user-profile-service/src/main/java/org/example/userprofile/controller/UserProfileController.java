@@ -2,8 +2,7 @@ package org.example.userprofile.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.example.userprofile.dto.request.UserProfileRequest;
-import org.example.userprofile.dto.response.response.UserProfileResponse;
+import org.example.userprofile.dto.response.UserProfileResponse;
 import org.example.userprofile.service.UserProfileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

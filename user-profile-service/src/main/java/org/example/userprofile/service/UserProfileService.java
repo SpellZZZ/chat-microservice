@@ -3,8 +3,8 @@ package org.example.userprofile.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.example.userprofile.dto.request.UserProfileRequest;
-import org.example.userprofile.dto.response.response.UserProfileResponse;
+import org.example.userprofile.dto.request.UserRegisterRequest;
+import org.example.userprofile.dto.response.UserProfileResponse;
 import org.example.userprofile.model.UserProfile;
 import org.example.userprofile.repository.UserRepo;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +21,7 @@ public class UserProfileService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public void createUserProfile(UserProfileRequest userProfileRequest) {
+    public void createUserProfile(UserRegisterRequest userProfileRequest) {
         UserProfile userProfile = UserProfile.builder()
                 .username(userProfileRequest.getUsername())
                 .email(userProfileRequest.getEmail())

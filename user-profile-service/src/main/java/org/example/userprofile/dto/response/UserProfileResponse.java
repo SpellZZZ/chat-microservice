@@ -1,4 +1,4 @@
-package org.example.userprofile.dto.request;
+package org.example.userprofile.dto.response;
 
 
 import lombok.*;
@@ -8,8 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserProfileRequest {
+public class UserProfileResponse {
+    private Long id;
     private String username;
-    private String password;
     private String email;
 }
