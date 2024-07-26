@@ -24,6 +24,7 @@ public class SecurityConfig {
                         .permitAll());
                 //.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
+
         return http.build();
 
     }
