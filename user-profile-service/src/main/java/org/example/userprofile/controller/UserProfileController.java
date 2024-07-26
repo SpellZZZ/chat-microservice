@@ -33,11 +33,16 @@ public class UserProfileController {
     }
 
     @GetMapping("/getUserProfile/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public UserProfileResponse getUserProfile(@PathVariable("id") Long userProfileId) {
-        return userProfileService.getUserProfile(userProfileId);
+    public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable("id") Long userProfileId) {
+
+        UserProfileResponse userProfileResponse = userProfileService.getUserProfile(userProfileId);
+
+        if (userProfileResponse == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } else {
+            return ResponseEntity.ok(userProfileResponse);
+        }
+
     }
-
-
 
 }
