@@ -21,8 +21,10 @@ public class SecurityConfig {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
+                        .pathMatchers("/api/user-profile/createUser", "/api/user-profile/isUserNameExisting/**", "/api/user-profile/isEmailExisting/**")
+                        .permitAll()
                         .anyExchange()
-                        .permitAll());
+                        .authenticated());
 
         return http.build();
 
