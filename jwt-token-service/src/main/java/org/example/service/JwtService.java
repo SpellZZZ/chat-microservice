@@ -3,6 +3,7 @@ package org.example.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.AuthRequest;
+import org.example.dto.request.ValidRequest;
 import org.example.dto.response.TokenResponse;
 import org.example.util.JwtUtil;
 import org.springframework.stereotype.Service;
@@ -19,5 +20,9 @@ public class JwtService {
         return TokenResponse.builder()
                         .token(jwtUtil.generateToken(authRequest))
                 .build();
+    }
+
+    public boolean validToken(ValidRequest validRequest) {
+        return jwtUtil.validateToken(validRequest);
     }
 }

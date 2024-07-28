@@ -3,6 +3,7 @@ package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dto.request.AuthRequest;
+import org.example.dto.request.ValidRequest;
 import org.example.dto.response.TokenResponse;
 import org.example.service.JwtService;
 import org.springframework.http.HttpStatus;
@@ -20,5 +21,11 @@ public class JwtController {
     public TokenResponse getToken(@RequestBody AuthRequest authRequest) {
         return jwtService.getToken(authRequest);
     }
+    @GetMapping("/validToken")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean validToken(@RequestBody ValidRequest validRequest) {
+        return jwtService.validToken(validRequest);
+    }
+
 
 }
