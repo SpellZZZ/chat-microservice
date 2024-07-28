@@ -20,11 +20,11 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private Key key;
+    private String key;
 
     @PostConstruct
     public void init() {
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        this.key = "dad1651459c1e86875da325a5a742dcd33435f9c6b71bc3af59b00dad885e77e";
     }
 
     public String extractUsername(String token) {
@@ -49,7 +49,7 @@ public class JwtUtil {
     }
 
     public String generateToken(AuthRequest authRequest) {
-        long jwtExpiration = 86400000;
+        long jwtExpiration = 1000 * 60 * 60 * 10;
         HashMap<String, Object> extraClaims = new HashMap<>();
         extraClaims.put("username", authRequest.getUsername());
         extraClaims.put("password", authRequest.getPassword());
@@ -61,16 +61,10 @@ public class JwtUtil {
                 .setSubject(authRequest.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(key.toString())), SignatureAlgorithm.HS256)
+                .signWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(key)), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-
-    private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(key).compact();
-    }
 
     public Boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);
