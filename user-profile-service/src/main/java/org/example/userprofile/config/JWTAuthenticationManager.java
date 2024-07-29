@@ -1,4 +1,4 @@
-package org.example.config;
+package org.example.userprofile.config;
 
 
 import org.example.util.JwtUtil;

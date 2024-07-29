@@ -1,4 +1,4 @@
-package org.example.authservice.controller;
+package org.example.userprofile.controller;
 
 import lombok.RequiredArgsConstructor;
 
