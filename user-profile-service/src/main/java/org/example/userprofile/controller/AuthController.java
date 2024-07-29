@@ -22,13 +22,15 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public Mono<ResponseEntity<String>> register(@RequestBody UserRegisterRequest userRegisterRequest) {
-        return authService.register(userRegisterRequest)
-                .then(Mono.just(ResponseEntity.status(HttpStatus.CREATED).body("User profile created!")))
-                .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage())));
+    public ResponseEntity<String> register(@RequestBody UserRegisterRequest userRegisterRequest) {
+
+        authService.register(userRegisterRequest);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("User profile created!");
+
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody UserLoginRequest userLoginRequest) throws Exception {
 
         TokenResponse login = authService.login(userLoginRequest);

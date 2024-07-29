@@ -19,11 +19,6 @@ public class UserProfileController {
     private final UserProfileService userProfileService;
 
 
-    @PostMapping("/createUser")
-    @ResponseStatus(HttpStatus.OK)
-    public void createUser(@RequestBody UserRegisterRequest userRegisterRequest) {
-        userProfileService.createUserProfile(userRegisterRequest);
-    }
 
 
     @GetMapping("/getUserProfile")
@@ -56,17 +51,5 @@ public class UserProfileController {
             return ResponseEntity.ok(userProfileResponse);
         }
     }
-
-    @GetMapping("/isUserNameExisting/{userName}")
-    public boolean isUserNameExisting(@PathVariable("userName") String userName) {
-        return userProfileService.isUsernameExisting(userName);
-    }
-    @GetMapping("/isEmailExisting/{email}")
-    public boolean isEmailExisting(@PathVariable("email") String email) {
-        return userProfileService.isEmailExisting(email);
-    }
-
-
-
 
 }

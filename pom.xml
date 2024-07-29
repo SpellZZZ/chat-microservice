@@ -19,9 +19,7 @@
 
     <modules>
         <module>user-profile-service</module>
-        <module>auth-service</module>
         <module>eureka-service</module>
-        <module>jwt-token-service</module>
     </modules>
 
 
