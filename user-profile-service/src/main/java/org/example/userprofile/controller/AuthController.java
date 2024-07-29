@@ -2,10 +2,11 @@ package org.example.userprofile.controller;
 
 import lombok.RequiredArgsConstructor;
 
-import org.example.authservice.dao.request.UserLoginRequest;
-import org.example.authservice.dao.request.UserRegisterRequest;
-import org.example.authservice.dao.response.TokenResponse;
-import org.example.authservice.service.AuthService;
+
+import org.example.userprofile.dto.request.UserLoginRequest;
+import org.example.userprofile.dto.request.UserRegisterRequest;
+import org.example.userprofile.dto.response.TokenResponse;
+import org.example.userprofile.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

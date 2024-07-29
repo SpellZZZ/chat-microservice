@@ -1,11 +1,11 @@
-package org.example.authservice.service;
+package org.example.userprofile.service;
 
 
 
 import lombok.RequiredArgsConstructor;
-import org.example.authservice.dao.request.UserLoginRequest;
-import org.example.authservice.dao.request.UserRegisterRequest;
-import org.example.authservice.dao.response.TokenResponse;
+import org.example.userprofile.dto.request.UserLoginRequest;
+import org.example.userprofile.dto.request.UserRegisterRequest;
+import org.example.userprofile.dto.response.TokenResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
