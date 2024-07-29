@@ -32,9 +32,8 @@ public class AuthController {
 
     @GetMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody UserLoginRequest userLoginRequest) throws Exception {
-
-        TokenResponse login = authService.login(userLoginRequest);
-        return ResponseEntity.ok(login);
+        String login = authService.login(userLoginRequest);
+        return ResponseEntity.ok(new TokenResponse(login));
 
     }
 

@@ -8,7 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import org.example.userprofile.dto.request.AuthRequest;
+import org.example.userprofile.dto.request.UserJwtRequest;
 import org.example.userprofile.dto.request.ValidRequest;
 import org.springframework.stereotype.Component;
 
@@ -64,17 +64,17 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(AuthRequest authRequest) {
+    public String generateToken(UserJwtRequest userJwtRequest) {
         long jwtExpiration = 1000 * 60 * 60 * 10;
         HashMap<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("username", authRequest.getUsername());
-        extraClaims.put("password", authRequest.getPassword());
-        return buildToken(extraClaims, authRequest, jwtExpiration);
+        extraClaims.put("username", userJwtRequest.getUsername());
+        extraClaims.put("password", userJwtRequest.getPassword());
+        return buildToken(extraClaims, userJwtRequest, jwtExpiration);
     }
 
-    private String buildToken(Map<String, Object> extraClaims, AuthRequest authRequest, Long expiration) {
+    private String buildToken(Map<String, Object> extraClaims, UserJwtRequest userJwtRequest, Long expiration) {
         return Jwts.builder().setClaims(extraClaims)
-                .setSubject(authRequest.getUsername())
+                .setSubject(userJwtRequest.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
