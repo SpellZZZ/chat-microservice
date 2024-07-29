@@ -1,7 +1,8 @@
 package org.example.userprofile.config;
 
 
-import org.example.util.JwtUtil;
+
+import org.example.userprofile.util.JwtUtil;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

@@ -8,8 +8,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import org.example.dto.request.AuthRequest;
-import org.example.dto.request.ValidRequest;
+import org.example.userprofile.dto.request.AuthRequest;
+import org.example.userprofile.dto.request.ValidRequest;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;

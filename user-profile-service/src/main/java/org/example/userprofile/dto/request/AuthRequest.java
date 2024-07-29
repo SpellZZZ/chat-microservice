@@ -1,4 +1,4 @@
-package org.example.dto.request;
+package org.example.userprofile.dto.request;
 
 
 import lombok.*;
