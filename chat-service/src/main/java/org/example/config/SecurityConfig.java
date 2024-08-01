@@ -15,11 +15,12 @@ public class SecurityConfig {
 
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
+
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/ws/chat", "/api/auth/register")
-                        .permitAll()
+                        //.pathMatchers("/api/chat/sendMessage", "/api/chat/messages/**")
+                        //.permitAll()
                         .anyExchange()
-                        .authenticated());
+                        .permitAll());
 
         return http.build();
 

@@ -18,9 +18,6 @@ public class UserProfileController {
 
     private final UserProfileService userProfileService;
 
-
-
-
     @GetMapping("/getUserProfile")
     @ResponseStatus(HttpStatus.OK)
     public List<UserProfileResponse> getUserProfiles() {

@@ -2,32 +2,31 @@ package org.example.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.config.EnableWebFlux;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
+import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
-import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.server.support.WebSocketHandlerMapping;
+import reactor.core.publisher.Sinks;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@EnableWebFlux
-public class WebSocketConfig implements WebFluxConfigurer {
+public class WebSocketConfig{
+
+
 
     @Bean
-    public WebSocketHandlerAdapter webSocketHandlerAdapter() {
+    public SimpleUrlHandlerMapping handlerMapping(WebSocketHandler webSocketHandler){
+        return new SimpleUrlHandlerMapping(Map.of("/ws/messages", webSocketHandler),1);
+    }
+
+    @Bean
+    public WebSocketHandlerAdapter webSocketHandlerAdapter(){
         return new WebSocketHandlerAdapter();
     }
 
     @Bean
-    public WebSocketHandlerMapping webSocketHandlerMapping(ChatWebSocketHandler chatWebSocketHandler) {
-        Map<String, WebSocketHandler> map = new HashMap<>();
-        map.put("/ws/chat", chatWebSocketHandler);
-
-        WebSocketHandlerMapping handlerMapping = new WebSocketHandlerMapping();
-        handlerMapping.setOrder(-1);
-        handlerMapping.setUrlMap(map);
-        return handlerMapping;
+    public Sinks.Many<String> sink(){
+        return Sinks.many().multicast().directBestEffort();
     }
+
 }
