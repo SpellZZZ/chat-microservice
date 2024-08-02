@@ -22,16 +22,23 @@ import java.util.List;
 
 
 @RestController
+@RequestMapping("/api/chat")
 @RequiredArgsConstructor
 public class ChatController {
 
-    private final Sinks.Many<String> sinks;
-
+    private final ChatService chatService;
 
     @PostMapping("/demos")
     public void demo(){
-        sinks.emitNext("hello", Sinks.EmitFailureHandler.FAIL_FAST);
+        chatService.demos();
     }
+
+    @GetMapping("/messages/{senderId}/{recipientId}")
+    @ResponseBody
+    public Flux<ChatMessage> getMessages(@PathVariable String senderId, @PathVariable String recipientId) {
+        return chatService.getMessages(senderId, recipientId);
+    }
+
 
 }
 

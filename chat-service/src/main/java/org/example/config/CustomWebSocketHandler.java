@@ -31,8 +31,7 @@ public class CustomWebSocketHandler implements WebSocketHandler {
         return session.send(f);*/
         var s = session.receive()
                 .map(e -> e.getPayloadAsText())
-                .map(e -> new StringBuilder(e).reverse())
-                .map(e -> session.textMessage(e.toString()));
+                .map(e -> session.textMessage(new StringBuilder(e).reverse().toString()));
 
         return session.send(s);
 

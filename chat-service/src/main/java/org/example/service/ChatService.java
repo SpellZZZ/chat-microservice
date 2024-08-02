@@ -6,6 +6,7 @@ import org.example.repository.ChatMessageRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 public class ChatService {
 
     private final ChatMessageRepository chatMessageRepository;
+    private final Sinks.Many<String> sinks;
 
     public Mono<ChatMessage> saveMessage(String senderId, String recipientId, String content) {
         ChatMessage message = ChatMessage.builder()
@@ -27,6 +29,7 @@ public class ChatService {
     }
 
     public Flux<ChatMessage> getMessages(String senderId, String recipientId) {
+
         return chatMessageRepository.findBySenderIdAndReceiverId(senderId, recipientId);
     }
 
@@ -35,14 +38,7 @@ public class ChatService {
     }
 
 
-
-
-
-
-
-
-
-
-
-
+    public void demos() {
+        sinks.emitNext("hello", Sinks.EmitFailureHandler.FAIL_FAST);
+    }
 }
