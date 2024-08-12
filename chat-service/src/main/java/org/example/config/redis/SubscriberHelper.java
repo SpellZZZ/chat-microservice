@@ -1,8 +1,12 @@
 package org.example.config.redis;
 
 import io.lettuce.core.pubsub.RedisPubSubListener;
+import org.example.config.webSocket.WebSocketSessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.socket.TextMessage;
+
+import java.io.IOException;
 
 public class SubscriberHelper implements RedisPubSubListener<String, String>
 {
