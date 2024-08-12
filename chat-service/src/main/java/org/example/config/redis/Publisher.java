@@ -3,7 +3,10 @@ package org.example.config.redis;
 import io.lettuce.core.RedisClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
+
+@Component
 public class Publisher {
     RedisClient client;
 
