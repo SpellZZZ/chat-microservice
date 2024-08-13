@@ -4,6 +4,8 @@ package org.example.config;
 import lombok.RequiredArgsConstructor;
 import org.example.model.ChatMessage;
 import org.example.repository.ChatMessageRepository;
+import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
@@ -21,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class CustomWebSocketHandler implements WebSocketHandler {
 
+    private final ReactiveStringRedisTemplate redisTemplate;
     private final Sinks.Many<String> sinks;
     private final ChatMessageRepository messageRepository;
     private final Map<String, Sinks.Many<String>> userSessions = new ConcurrentHashMap<>();
@@ -28,15 +31,18 @@ public class CustomWebSocketHandler implements WebSocketHandler {
 
     @Override
     public Mono<Void> handle(WebSocketSession session) {
-
-
-
         String userId = getUserIdFromSession(session.getHandshakeInfo().getUri());
         if (userId == null || userId.isEmpty()) {
             return session.close();
         }
 
         Sinks.Many<String> sink = userSessions.computeIfAbsent(userId, k -> Sinks.many().multicast().directBestEffort());
+
+
+        redisTemplate.listenToChannel(userId)
+                .map(msg -> msg.getMessage())
+                .doOnNext(sink::tryEmitNext)
+                .subscribe();
 
         Mono<Void> input = session.receive()
                 .map(WebSocketMessage::getPayloadAsText)
@@ -47,7 +53,6 @@ public class CustomWebSocketHandler implements WebSocketHandler {
 
         return Mono.zip(input, output).then()
                 .doFinally(signalType -> userSessions.remove(userId));
-
     }
 
     private void handleIncomingMessage(String message, String senderId) {
@@ -66,21 +71,14 @@ public class CustomWebSocketHandler implements WebSocketHandler {
 
             System.out.println("Receiver " + receiverId);
             System.out.println("Sender " + senderId);
-            sendMessageToUser(receiverId, /*senderId + ": " +*/ content);
-
-            //sendMessageToUser(senderId, "You: " + content);
-
-        }
 
 
-    }
+            redisTemplate.convertAndSend(receiverId, senderId + ": " + content).subscribe();
 
-    private void sendMessageToUser(String userId, String message) {
-        Sinks.Many<String> sink = userSessions.get(userId);
-        if (sink != null) {
-            sink.tryEmitNext(message);
+            // redisTemplate.convertAndSend(senderId, "You: " + content).subscribe();
         }
     }
+
     private String getUserIdFromSession(URI uri) {
         String query = uri.getQuery();
         if (query != null) {
