@@ -4,6 +4,8 @@ package org.example.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.model.ChatMessage;
 import org.example.service.ChatService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -39,6 +41,15 @@ public class ChatController {
         return chatService.getMessages(senderId, recipientId);
     }
 
+
+    @Autowired
+    private ReactiveStringRedisTemplate redisTemplate;
+
+    @GetMapping("/test-redis")
+    public Mono<String> testRedis() {
+        return redisTemplate.opsForValue().set("testKey", "Hello, Redis!")
+                .then(redisTemplate.opsForValue().get("testKey"));
+    }
 
 }
 

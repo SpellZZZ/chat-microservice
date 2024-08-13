@@ -1,40 +1,22 @@
-package org.example.config.webSocket;
+package org.example.config;
 
-import org.example.config.redis.Publisher;
-import org.example.config.redis.Subscriber;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import reactor.core.publisher.Sinks;
 
 import java.util.Map;
 
 @Configuration
-public class WebSocketConfig implements WebSocketConfigurer {
+public class WebSocketConfig  {
 
-    @Autowired
-    WebSocketSessionManager webSocketSessionManager;
 
-    @Autowired
-    Publisher redisPublisher;
-
-    @Autowired
-    Subscriber redisSubscriber;
-
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler()
-    }
-
-   /* @Bean
+    @Bean
     public SimpleUrlHandlerMapping handlerMapping(WebSocketHandler webSocketHandler){
         return new SimpleUrlHandlerMapping(Map.of("/ws/messages", webSocketHandler),1);
-    }*/
+    }
 
     @Bean
     public WebSocketHandlerAdapter webSocketHandlerAdapter(){
