@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor
 public class CustomWebSocketHandler implements WebSocketHandler {
 
-    private final ReactiveStringRedisTemplate redisTemplate;
+    //private final ReactiveStringRedisTemplate redisTemplate;
     private final Sinks.Many<String> sinks;
     private final ChatMessageRepository messageRepository;
     private final Map<String, Sinks.Many<String>> userSessions = new ConcurrentHashMap<>();
@@ -38,10 +38,10 @@ public class CustomWebSocketHandler implements WebSocketHandler {
         Sinks.Many<String> sink = userSessions.computeIfAbsent(userId, k -> Sinks.many().multicast().directBestEffort());
 
 
-        redisTemplate.listenToChannel(userId)
+        /*redisTemplate.listenToChannel(userId)
                 .map(msg -> msg.getMessage())
                 .doOnNext(sink::tryEmitNext)
-                .subscribe();
+                .subscribe();*/
 
         Mono<Void> input = session.receive()
                 .map(WebSocketMessage::getPayloadAsText)
@@ -72,9 +72,9 @@ public class CustomWebSocketHandler implements WebSocketHandler {
             System.out.println("Sender " + senderId);
 
 
-            redisTemplate.convertAndSend(receiverId, senderId + ": " + content).subscribe();
+            //redisTemplate.convertAndSend(receiverId, senderId + ": " + content).subscribe();
 
-            // redisTemplate.convertAndSend(senderId, "You: " + content).subscribe();
+            // redisTemplate.convertAndSend(senderId, "You: " + content).subscribe(); // old
         }
     }
 
