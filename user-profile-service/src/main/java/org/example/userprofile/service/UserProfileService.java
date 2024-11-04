@@ -21,20 +21,17 @@ public class UserProfileService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
 
-
     public void createUserProfile(UserRegisterRequest userProfileRequest) {
         UserProfile userProfile = UserProfile.builder()
                 .username(userProfileRequest.getUsername())
                 .email(userProfileRequest.getEmail())
                 .password(passwordEncoder.encode(userProfileRequest.getPassword()))
                 .build();
-
         userRepo.save(userProfile);
     }
 
 
     public List<UserProfileResponse> getUserProfiles() {
-
         return userRepo.findAll().stream()
                 .map(user ->
                         UserProfileResponse.builder()
@@ -51,35 +48,32 @@ public class UserProfileService {
         if (user == null) {
             return null;
         }
-        return  UserProfileResponse.builder()
-                    .id(user.getUserId())
-                    .username(user.getUsername())
-                    .email(user.getEmail())
-                    .build();
+        return UserProfileResponse.builder()
+                .id(user.getUserId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .build();
     }
 
 
     public boolean isEmailExisting(String email) {
         return userRepo.findUserProfileByEmail(email).isPresent();
     }
+
     public boolean isUsernameExisting(String username) {
         return userRepo.findUserProfileByUsername(username).isPresent();
     }
 
-
     public UserProfileResponse getUserProfileByUserName(String userName) {
         Optional<UserProfile> userOp = userRepo.findUserProfileByUsername(userName);
-
         if (userOp.isEmpty()) {
             return null;
         }
         UserProfile user = userOp.get();
-
-        return  UserProfileResponse.builder()
+        return UserProfileResponse.builder()
                 .id(user.getUserId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .build();
-
     }
 }

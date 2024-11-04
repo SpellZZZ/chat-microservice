@@ -21,8 +21,6 @@ import reactor.core.publisher.Sinks;
 import java.util.List;
 
 
-
-
 @RestController
 @RequestMapping("/api/chat")
 @RequiredArgsConstructor
@@ -31,7 +29,7 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping("/demos")
-    public void demo(){
+    public void demo() {
         chatService.demos();
     }
 
@@ -40,7 +38,6 @@ public class ChatController {
     public Flux<ChatMessage> getMessages(@PathVariable String senderId, @PathVariable String recipientId) {
         return chatService.getMessages(senderId, recipientId);
     }
-
 
     @Autowired
     private ReactiveStringRedisTemplate redisTemplate;

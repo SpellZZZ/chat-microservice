@@ -1,12 +1,10 @@
 package org.example.userprofile.service;
 
 
-
 import lombok.RequiredArgsConstructor;
 import org.example.userprofile.dto.request.UserJwtRequest;
 import org.example.userprofile.dto.request.UserLoginRequest;
 import org.example.userprofile.dto.request.UserRegisterRequest;
-import org.example.userprofile.dto.response.TokenResponse;
 import org.example.userprofile.exception.UserAlreadyExistsException;
 import org.example.userprofile.model.UserProfile;
 import org.example.userprofile.repository.UserRepo;
@@ -26,32 +24,23 @@ public class AuthService {
     private final JwtUtil jwtUtil;
 
     public void register(UserRegisterRequest userRegisterRequest) {
-
-
         boolean emailExist = userRepo.findUserProfileByEmail(userRegisterRequest.getEmail()).isPresent();
         boolean userNameExist = userRepo.findUserProfileByUsername(userRegisterRequest.getUsername()).isPresent();
-
-        if(userNameExist || emailExist) {
+        if (userNameExist || emailExist) {
             throw new UserAlreadyExistsException();
         }
         UserProfile userProfile = buildUserProfile(userRegisterRequest);
-
         userRepo.save(userProfile);
 
     }
 
-
     public String login(UserLoginRequest userLoginRequest) {
 
         Optional<UserProfile> userProfile = userRepo.findUserProfileByUsername(userLoginRequest.getUsername());
-
-        if(userProfile.isEmpty()) {
+        if (userProfile.isEmpty()) {
             throw new UsernameNotFoundException("Username not found");
         }
-
         UserJwtRequest userJwtRequest = buildUserJwtRequest(userProfile.get());
-
-
         return jwtUtil.generateToken(userJwtRequest);
     }
 

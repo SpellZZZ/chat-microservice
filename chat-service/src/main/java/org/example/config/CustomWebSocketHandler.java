@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.model.ChatMessage;
 import org.example.repository.ChatMessageRepository;
 import org.springframework.data.redis.core.ReactiveStringRedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
