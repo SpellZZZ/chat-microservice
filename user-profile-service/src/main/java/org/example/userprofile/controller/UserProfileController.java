@@ -2,7 +2,6 @@ package org.example.userprofile.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.example.userprofile.dto.request.UserRegisterRequest;
 import org.example.userprofile.dto.response.UserProfileResponse;
 import org.example.userprofile.service.UserProfileService;
 import org.springframework.http.HttpStatus;
@@ -26,27 +25,21 @@ public class UserProfileController {
 
     @GetMapping("/getUserProfile/{id}")
     public ResponseEntity<UserProfileResponse> getUserProfile(@PathVariable("id") Long userProfileId) {
-
         UserProfileResponse userProfileResponse = userProfileService.getUserProfile(userProfileId);
-
         if (userProfileResponse == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } else {
             return ResponseEntity.ok(userProfileResponse);
         }
-
     }
 
     @GetMapping("/getUserProfileByName/{userName}")
     public ResponseEntity<UserProfileResponse> getUserProfileByUsername(@PathVariable("userName") String userName) {
-
         UserProfileResponse userProfileResponse = userProfileService.getUserProfileByUserName(userName);
-
         if (userProfileResponse == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         } else {
             return ResponseEntity.ok(userProfileResponse);
         }
     }
-
 }

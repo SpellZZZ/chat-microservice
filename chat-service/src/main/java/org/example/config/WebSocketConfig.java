@@ -10,23 +10,20 @@ import reactor.core.publisher.Sinks;
 import java.util.Map;
 
 @Configuration
-public class WebSocketConfig  {
-
+public class WebSocketConfig {
 
     @Bean
-    public SimpleUrlHandlerMapping handlerMapping(WebSocketHandler webSocketHandler){
-        return new SimpleUrlHandlerMapping(Map.of("/ws/messages", webSocketHandler),1);
+    public SimpleUrlHandlerMapping handlerMapping(WebSocketHandler webSocketHandler) {
+        return new SimpleUrlHandlerMapping(Map.of("/ws/messages", webSocketHandler), 1);
     }
 
     @Bean
-    public WebSocketHandlerAdapter webSocketHandlerAdapter(){
+    public WebSocketHandlerAdapter webSocketHandlerAdapter() {
         return new WebSocketHandlerAdapter();
     }
 
     @Bean
-    public Sinks.Many<String> sink(){
+    public Sinks.Many<String> sink() {
         return Sinks.many().multicast().directBestEffort();
     }
-
-
 }
