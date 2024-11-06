@@ -29,7 +29,7 @@ public class ChatService {
     }
 
     public Flux<ChatMessage> getMessages(String senderId, String recipientId) {
-
+        System.out.println("hi");
         return chatMessageRepository.findBySenderIdAndReceiverId(senderId, recipientId);
     }
 
