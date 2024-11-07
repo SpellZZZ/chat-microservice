@@ -20,8 +20,9 @@
     <modules>
         <module>user-profile-service</module>
         <module>eureka-service</module>
-        <module>chat-service</module>
+        <module>webSocket-service</module>
         <module>config-service</module>
+        <module>message-service</module>
     </modules>
 
 
