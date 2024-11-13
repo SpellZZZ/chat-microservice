@@ -2,6 +2,7 @@ package org.example.userprofile.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.bouncycastle.openssl.PasswordException;
 import org.example.userprofile.dto.request.UserJwtRequest;
 import org.example.userprofile.dto.request.UserLoginRequest;
 import org.example.userprofile.dto.request.UserRegisterRequest;
@@ -34,13 +35,21 @@ public class AuthService {
 
     }
 
-    public String login(UserLoginRequest userLoginRequest) {
+    public String login(UserLoginRequest userLoginRequest) throws PasswordException {
 
-        Optional<UserProfile> userProfile = userRepo.findUserProfileByUsername(userLoginRequest.getUsername());
-        if (userProfile.isEmpty()) {
+        Optional<UserProfile> userProfileOptional = userRepo.findUserProfileByUsername(userLoginRequest.getUsername());
+        if (userProfileOptional.isEmpty()) {
             throw new UsernameNotFoundException("Username not found");
         }
-        UserJwtRequest userJwtRequest = buildUserJwtRequest(userProfile.get());
+
+        UserProfile userProfile = userProfileOptional.get();
+
+        boolean passwordMatches = passwordEncoder.matches(userLoginRequest.getPassword(), userProfile.getPassword());
+        if (!passwordMatches) {
+            throw new PasswordException("Incorrect password");
+        }
+
+        UserJwtRequest userJwtRequest = buildUserJwtRequest(userProfile);
         return jwtUtil.generateToken(userJwtRequest);
     }
 
