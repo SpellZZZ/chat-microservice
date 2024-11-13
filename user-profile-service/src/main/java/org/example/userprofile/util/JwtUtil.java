@@ -25,7 +25,7 @@ public class JwtUtil {
 
     @PostConstruct
     public void init() {
-        this.key = "dad1651459c1e86875da325a5a742dcd33435f9c6b71bc3af59b00dad885e77e";
+        this.key = "mY5Hh+3P4bHtQ7Y6bGXY9cNqKp4ZJlNsJYZBRc5F/wk=";
     }
 
     public String extractUsername(String token) {
@@ -73,11 +73,13 @@ public class JwtUtil {
     }
 
     private String buildToken(Map<String, Object> extraClaims, UserJwtRequest userJwtRequest, Long expiration) {
-        return Jwts.builder().setClaims(extraClaims)
+        return Jwts.builder()
+                .setClaims(extraClaims)
                 .setSubject(userJwtRequest.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .setHeaderParam("typ", "JWT")
                 .compact();
     }
 

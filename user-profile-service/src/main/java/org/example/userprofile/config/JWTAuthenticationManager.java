@@ -1,5 +1,8 @@
 package org.example.userprofile.config;
 
+import lombok.RequiredArgsConstructor;
+import org.example.userprofile.dto.request.ValidRequest;
+import org.example.userprofile.repository.UserRepo;
 import org.example.userprofile.util.JwtUtil;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -10,29 +13,39 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @Component
+@RequiredArgsConstructor
 public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
 
     private final JwtUtil jwtUtil;
-
-    public JWTAuthenticationManager(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
+    private final UserRepo userRepo;
 
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) throws AuthenticationException {
         String token = authentication.getCredentials().toString();
         String username = jwtUtil.extractUsername(token);
 
-        return null;
-        /*return userService.findByUsername(username)
+        var v =  userRepo.findUserProfileByUsername(username)
                 .map(userDetails -> {
-                    if (jwtUtil.validateToken(token, userDetails.getUsername())) {
+                    ValidRequest validRequest = ValidRequest.builder()
+                            .username(userDetails.getUsername())
+                            .token(token)
+                            .build();
+
+                    if (jwtUtil.validateToken(validRequest)) {
+                        // Tworzymy Optional z wynikiem, gdy autoryzacja przebiegła pomyślnie
                         return authentication;
                     } else {
                         throw new AuthenticationException("Invalid JWT token") {};
                     }
-                });*/
+                });
+
+        Mono<Optional<Authentication>> monoWithOptional = Mono.just(v);
+        Mono<Authentication> monoWithoutOptional = monoWithOptional.flatMap(Mono::justOrEmpty);
+
+        return monoWithoutOptional;
     }
 
     public ServerAuthenticationConverter authenticationConverter() {
