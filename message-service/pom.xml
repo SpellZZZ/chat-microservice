@@ -17,6 +17,7 @@
 
     <properties>
         <java.version>17</java.version>
+        <service.name>message-service</service.name>
     </properties>
 
     <dependencies>
@@ -76,6 +77,22 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <to>
+                        <image>${service.name}</image>
+                    </to>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 
 </project>
