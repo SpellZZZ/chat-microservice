@@ -3,7 +3,7 @@ package org.example.messageservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.messageservice.model.ChatMessage;
-import org.example.messageservice.service.ChatService;
+import org.example.messageservice.service.ChatServiceImpl;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 @RequiredArgsConstructor
 public class ChatController {
 
-    private final ChatService chatService;
+    private final ChatServiceImpl chatServiceImpl;
 
     //todo
     @GetMapping("/messages/{senderId}/{recipientId}")
