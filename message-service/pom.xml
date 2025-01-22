@@ -17,6 +17,7 @@
 
     <properties>
         <java.version>17</java.version>
+        <service.name>message-service</service.name>
     </properties>
 
     <dependencies>
@@ -76,6 +77,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-
 </project>

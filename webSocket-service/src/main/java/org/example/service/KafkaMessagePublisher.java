@@ -32,7 +32,7 @@ public class KafkaMessagePublisher {
     //todo serialization/deserialization
     public void sendEventsToTopic(ChatMessageDto chatMessageDto) {
         try {
-            CompletableFuture<SendResult<String, Object>> future = template.send("chat-message", chatMessageDto.getMessage());
+            CompletableFuture<SendResult<String, Object>> future = template.send("chat-message", chatMessageDto);
             future.whenComplete((result, ex) -> {
                 if (ex == null) {
                     System.out.println("Sent message=[" + chatMessageDto.toString() +

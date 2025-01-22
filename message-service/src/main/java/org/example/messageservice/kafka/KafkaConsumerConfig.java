@@ -17,7 +17,6 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
-
     @Bean
     public Map<String, Object> consumerConfig() {
         Map<String, Object> props = new HashMap<>();
@@ -27,7 +26,7 @@ public class KafkaConsumerConfig {
                 StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
                 JsonDeserializer.class);
-        props.put(JsonDeserializer.TRUSTED_PACKAGES, "org.example.dto");
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "org.example.messageservice.dto");
         return props;
     }
 
