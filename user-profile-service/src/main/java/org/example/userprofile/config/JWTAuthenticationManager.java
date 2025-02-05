@@ -30,7 +30,6 @@ public class JWTAuthenticationManager implements ReactiveAuthenticationManager {
     public Mono<Authentication> authenticate(Authentication authentication) throws AuthenticationException {
         String token = authentication.getCredentials().toString();
         String username = jwtUtil.extractUsername(token);
-        System.out.println("here: " + token);
 
         var v =  userRepo.findUserProfileByUsername(username)
                 .map(userDetails -> {

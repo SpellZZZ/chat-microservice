@@ -5,6 +5,8 @@ import org.example.messageservice.dto.ChatMessageDto;
 import org.example.messageservice.model.ChatMessage;
 import org.example.messageservice.repository.ChatMessageRepository;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 @RequiredArgsConstructor
@@ -12,7 +14,7 @@ public class ChatServiceImpl implements ChatService {
 
     private final ChatMessageRepository chatMessageRepository;
 
-    public void saveMessageInDatabase(ChatMessageDto chatMessageDto) {
+    public Mono<ChatMessage> saveMessageInDatabase(ChatMessageDto chatMessageDto) {
 
         ChatMessage chatMessage = ChatMessage.builder()
                 .senderId(chatMessageDto.getSenderId())
@@ -21,7 +23,8 @@ public class ChatServiceImpl implements ChatService {
                 .timestamp(chatMessageDto.getTimestamp())
                 .build();
 
-        chatMessageRepository.save(chatMessage);
+        System.out.println("saving message: " + chatMessage.toString());
+        return chatMessageRepository.save(chatMessage);
     }
 
 
